@@ -29,6 +29,7 @@ import {
   IsHexColor,
   IsHexadecimal,
   IsIP,
+  IsIPRange,
   IsISBN,
   IsISO8601,
   IsIn,
@@ -2722,6 +2723,38 @@ describe('IsIP', () => {
   it('should return error object with proper data', () => {
     const validationType = 'isIp';
     const message = 'someProperty must be an ip address';
+    return checkReturnedError(new MyClass(), invalidValues, validationType, message);
+  });
+});
+
+describe('IsIPRange', () => {
+  const validValues = ['127.0.0.1/255', '0.0.0.0/12', '255.255.255.1/255', '1.2.3.4/6'];
+  const invalidValues = [null, undefined, 'abc', '256.0.0.0', '0.0.0.256', '26.0.0.256', '26.0.0.256/abc'];
+
+  class MyClass {
+    @IsIPRange()
+    someProperty: string;
+  }
+
+  it('should not fail if validator.validate said that its valid', () => {
+    return checkValidValues(new MyClass(), validValues);
+  });
+
+  it('should fail if validator.validate said that its invalid', () => {
+    return checkInvalidValues(new MyClass(), invalidValues);
+  });
+
+  it('should not fail if method in validator said that its valid', () => {
+    validValues.forEach(value => expect(isIP(value)).toBeTruthy());
+  });
+
+  it('should fail if method in validator said that its invalid', () => {
+    invalidValues.forEach(value => expect(isIP(value)).toBeFalsy());
+  });
+
+  it('should return error object with proper data', () => {
+    const validationType = 'isIpRange';
+    const message = 'someProperty must be an ip address range';
     return checkReturnedError(new MyClass(), invalidValues, validationType, message);
   });
 });
