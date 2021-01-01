@@ -2728,7 +2728,7 @@ describe('IsIP', () => {
 });
 
 describe('IsIPRange', () => {
-  const validValues = ['127.0.0.1/255', '0.0.0.0/12', '255.255.255.1/255', '1.2.3.4/6'];
+  const validValues = ['192.168.1.1/32'];
   const invalidValues = [null, undefined, 'abc', '26.0.0.256/abc'];
 
   class MyClass {
